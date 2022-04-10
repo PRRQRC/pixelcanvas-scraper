@@ -134,21 +134,9 @@ class Scraper {
     }
 
     this.source.onerror = (e) => {
-      console.log("EventSource error: ". e);
+      this.eventEmitter.emit("connectionError", e);
     };
   }
 }
-
-/*const scraper = new Scraper("57406ac14592dae5e720e0e68d0f4583", { x: -513, y: 2780, w: 32, h: 32 });
-scraper.get().then(canvas => {
-  console.log(canvas.getColor(-500, 2797));
-});
-scraper.connectEventSource();
-scraper.on("update", (data) => {
-  console.log(data);
-});
-scraper.on("connectionReady", (e) => {
-  console.log("EventSource connection ready!");
-});*/
 
 module.exports = Scraper;
