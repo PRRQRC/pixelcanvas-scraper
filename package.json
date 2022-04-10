@@ -1,6 +1,6 @@
 {
   "name": "pixelcanvas-scraper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "scraper.js",
   "scripts": {
@@ -11,7 +11,6 @@
   "dependencies": {
     "eventsource": "^2.0.0",
     "express": "^4.17.3",
-    "puppeteer": "^13.5.2",
     "ws": "^8.5.0"
   },
   "publishConfig": {
