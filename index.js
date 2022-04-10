@@ -1,8 +1,9 @@
-const http = require('https'); // or 'https' for https:// URLs
+const http = require('https'); // or 'http' for http:// URLs
 const Matrix = require('./matrix.js');
 const EnumColor = require('./colors.js');
 const events = require("events");
 const EventSource = require("eventsource");
+const { threadId } = require('worker_threads');
 
 class Scraper {
   constructor(fingerprint, coords) {
@@ -124,6 +125,9 @@ class Scraper {
         }
       }
     }
+    this.source.onopen = (e) => {
+      this.eventEmitter.emit("connectionReady", e);
+    }
 
     this.source.onerror = (e) => {
       console.log("EventSource error: ". e);
@@ -138,6 +142,9 @@ scraper.get().then(canvas => {
 scraper.connectEventSource();
 scraper.on("update", (data) => {
   console.log(data);
+});
+scraper.on("connectionReady", (e) => {
+  console.log("EventSource connection ready!");
 });*/
 
 module.exports = Scraper;
