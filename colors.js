@@ -11,23 +11,23 @@ class Color {
 class EnumColor {
   constructor() {
     this.ENUM = [
-      new Color(-1, 'transparent', (255, 255, 255, 0)),
-      new Color(0, 'white', (255, 255, 255, 255)),
-      new Color(1, 'gainsboro', (228, 228, 228, 255)),
-      new Color(2, 'grey', (136, 136, 136, 255)),
-      new Color(3, 'nero', (34, 34, 34, 255)),
-      new Color(4, 'carnation pink', (255, 167, 209, 255)),
-      new Color(5, 'red', (229, 0, 0, 255)),
-      new Color(6, 'orange', (229, 149, 0, 255)),
-      new Color(7, 'brown', (160, 106, 66, 255)),
-      new Color(8, 'yellow', (229, 217, 0, 255)),
-      new Color(9, 'conifer', (148, 224, 68, 255)),
-      new Color(10, 'green', (2, 190, 1, 255)),
-      new Color(11, 'dark turquoise', (0, 211, 221, 255)),
-      new Color(12, 'pacific blue', (0, 131, 199, 255)),
-      new Color(13, 'blue', (0, 0, 234, 255)),
-      new Color(14, 'violet', (207, 110, 228, 255)),
-      new Color(15, 'purple', (130, 0, 128, 255))
+      new Color(-1, 'transparent', [255, 255, 255, 0]),
+      new Color(0, 'white', [255, 255, 255, 255]),
+      new Color(1, 'gainsboro', [228, 228, 228, 255]),
+      new Color(2, 'grey', [136, 136, 136, 255]),
+      new Color(3, 'nero', [34, 34, 34, 255]),
+      new Color(4, 'carnation pink', [255, 167, 209, 255]),
+      new Color(5, 'red', [229, 0, 0, 255]),
+      new Color(6, 'orange', [229, 149, 0, 255]),
+      new Color(7, 'brown', [160, 106, 66, 255]),
+      new Color(8, 'yellow', [229, 217, 0, 255]),
+      new Color(9, 'conifer', [148, 224, 68, 255]),
+      new Color(10, 'green', [2, 190, 1, 255]),
+      new Color(11, 'dark turquoise', [0, 211, 221, 255]),
+      new Color(12, 'pacific blue', [0, 131, 199, 255]),
+      new Color(13, 'blue', [0, 0, 234, 255]),
+      new Color(14, 'violet', [207, 110, 228, 255]),
+      new Color(15, 'purple', [130, 0, 128, 255])
     ]
 
     return this;
@@ -49,7 +49,7 @@ class EnumColor {
       }
     });
 
-    let diffMin = [(255, 255, 255), 1038366];
+    let diffMin = [[255, 255, 255], 1038366];
 
     if (rgb[3] != 255) return this.index(-1);
 
@@ -61,7 +61,7 @@ class EnumColor {
       let diffB = ((rgb[2] + brightness) - color.rgb[2]) * ((rgb[2] + brightness) - color.rgb[2]);
 
       let x = Math.min(diffR, diffG, diffB);
-      let z = Math.max(diffR, diffG, diffB); // ATTENTION: LAST DIFFB SHOULD BE DIFFR?
+      let z = Math.max(diffR, diffG, diffB); // ATTENTION: LAST diffB SHOULD BE diffR?
       let y = (diffR + diffG + diffB) - (x + z);
 
       x = x / sensitive;
@@ -75,7 +75,7 @@ class EnumColor {
       }
     }
 
-    return EnumColor.rgb(diff_min[0]);
+    return this.rgb(diff_min[0]);
   }
 }
 

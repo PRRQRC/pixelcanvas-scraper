@@ -2,15 +2,19 @@
   "name": "pixelcanvas-scraper",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "scraper.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "author": "ShadowLp174",
   "license": "ISC",
   "dependencies": {
     "eventsource": "^2.0.0",
+    "express": "^4.17.3",
     "puppeteer": "^13.5.2",
     "ws": "^8.5.0"
+  },
+  "publishConfig": {
+    "ShadowLp174:registry": "https://npm.pkg.github.com"
   }
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <h1>Test site</h1>
+
+  <p>Pixel updates will appear here when they occur: </p>
+
+  <div id="logs"></div>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:3000/api/live');
+    socket.onopen = () => {
+      console.log("Connected to server");
+    };
+
+    socket.onmessage = (msg) => {
+      var data;
+      try {
+        data = JSON.parse(msg.data);
+      } catch (e) {
+        console.log("Invalid JSON: ", e, msg);
+        return;
+      }
+
+      switch (data.type.toLowerCase()) {
+        case "update":
+          console.log("Pixel update received: ", data.data);
+          var p = document.createElement("p");
+          p.innerHTML = "Pixel update: " + JSON.stringify(data.data);
+          document.getElementById("logs").appendChild(p);
+          break;
+        default:
+          console.log("Data received: ", data);
+          var p = document.createElement("p");
+          p.innerHTML = "Data: " + JSON.stringify(data.data);
+          document.getElementById("logs").appendChild(p);
+          break;
+      }
+    };
+  </script>
+</body>
+
+</html>
