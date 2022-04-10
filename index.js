@@ -1,11 +1,16 @@
 const http = require('https'); // or 'https' for https:// URLs
 const Matrix = require('./matrix.js');
 const EnumColor = require('./colors.js');
+const WebSocket = require('ws');
 
 class Scraper {
-  constructor() {
+  constructor(fingerprint) {
     this.colors = new EnumColor();
     this.canvas = null;
+
+    this.eventUrl = "wss://pixelcanvas.io/";
+
+    this.fingerprint = fingerprint;
 
     return this;
   }
@@ -49,8 +54,8 @@ class Scraper {
 
   get() {
     return new Promise(async (res, rej) => {
-      const x = -497; // start coords
-      const y = 2796;
+      const x = -513; // start coords
+      const y = 2780;
 
       const h = 32;
       const w = 32;
@@ -72,12 +77,12 @@ class Scraper {
             let tx = offX + (Math.floor(i / (64 * 64)) % 15) * 64 + (i % (64 * 64)) % 64;
             let ty = offY + Math.floor(i / (64 * 64 * 15)) * 64 + Math.floor((i % (64 * 64)) / 64);
             let c = b >> 4;
-            canvas.update(tx, ty, colors.index(c));
+            canvas.update(tx, ty, this.colors.index(c));
             i += 1;
             tx = offX + (Math.floor(i / (64 * 64)) % 15) * 64 + (i % (64 * 64)) % 64;
             ty = offY + Math.floor(i / (64 * 64 * 15)) * 64 + Math.floor((i % (64 * 64)) / 64);
             c = b & 0xF;
-            canvas.update(tx, ty, colors.index(c));
+            canvas.update(tx, ty, this.colors.index(c));
             i += 1;
           });
         }
@@ -86,6 +91,19 @@ class Scraper {
       res(canvas);
     });
   }
+
+  connectWebsocket() {
+    this.socket = new WebSocket(this.eventUrl + '?fingerprint=' + this.fingerprint);
+
+    this.socket.onopen = (socket) => {
+      console.log("Socket opened", socket);
+    }
+  }
 }
+
+/*const scraper = new Scraper("57406ac14592dae5e720e0e68d0f4583");
+scraper.get().then(canvas => {
+  console.log(canvas.getColor(-500, 2797));
+})*/
 
 module.exports = Scraper;

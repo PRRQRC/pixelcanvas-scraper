@@ -25,7 +25,6 @@ class Matrix {
 
   getColor(x, y) {
     if (!this.matrix[x]) return false;
-    if (!this.matrix[x][y]) return false;
     return this.matrix[x][y];
   }
 }
