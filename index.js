@@ -1,14 +1,23 @@
 const http = require('https'); // or 'https' for https:// URLs
 const Matrix = require('./matrix.js');
 const EnumColor = require('./colors.js');
-const WebSocket = require('ws');
+const events = require("events");
+const EventSource = require("eventsource");
 
 class Scraper {
-  constructor(fingerprint) {
+  constructor(fingerprint, coords) {
     this.colors = new EnumColor();
     this.canvas = null;
 
-    this.eventUrl = "wss://pixelcanvas.io/";
+    this.coords = coords;
+    this.x = coords.x;
+    this.y = coords.y;
+    this.w = coords.w;
+    this.h = coords.h;
+
+    this.eventEmitter = new events.EventEmitter();
+
+    this.eventUrl = "https://pixelcanvas.io/";
 
     this.fingerprint = fingerprint;
 
@@ -23,7 +32,6 @@ class Scraper {
       'Referer': ORIGIN
     };
     return new Promise((res, rej) => {
-      console.log(`/api/bigchunk/${x}.${y}.bmp`);
       const request = http.get({ hostname: "pixelcanvas.io", path: `/api/bigchunk/${x}.${y}.bmp`, headers: headers }, function (response) {
         let data = [];
 
@@ -54,11 +62,11 @@ class Scraper {
 
   get() {
     return new Promise(async (res, rej) => {
-      const x = -513; // start coords
-      const y = 2780;
+      const x = this.x; // start coords
+      const y = this.y;
 
-      const h = 32;
-      const w = 32;
+      const h = this.h;
+      const w = this.w;
 
       const canvas = new Matrix(x, y, w, h);
 
@@ -87,23 +95,49 @@ class Scraper {
           });
         }
       }
+      this.eventEmitter.emit("ready", canvas);
       this.canvas = canvas;
       res(canvas);
     });
   }
 
-  connectWebsocket() {
-    this.socket = new WebSocket(this.eventUrl + '?fingerprint=' + this.fingerprint);
+  emit(event, data) {
+    this.eventEmitter.emit(event, data);
+  }
+  on(event, callback) {
+    this.eventEmitter.on(event, callback);
+  }
+  once(event, callback) {
+    this.eventEmitter.once(event, callback);
+  }
 
-    this.socket.onopen = (socket) => {
-      console.log("Socket opened", socket);
+  connectEventSource() {
+    this.source = new EventSource(this.eventUrl + "events?fingerprint=" + this.fingerprint);
+
+    this.source.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      if (data.x >= this.x && data.x <= this.x + this.w) {
+        if (data.y >= this.y && data.y <= this.y + this.h) {
+          this.canvas.update(data.x, data.y, this.colors.index(data.color));
+          data.color = this.colors.index(data.color);
+          this.emit("update", data);
+        }
+      }
     }
+
+    this.source.onerror = (e) => {
+      console.log("EventSource error: ". e);
+    };
   }
 }
 
-/*const scraper = new Scraper("57406ac14592dae5e720e0e68d0f4583");
+/*const scraper = new Scraper("57406ac14592dae5e720e0e68d0f4583", { x: -513, y: 2780, w: 32, h: 32 });
 scraper.get().then(canvas => {
   console.log(canvas.getColor(-500, 2797));
-})*/
+});
+scraper.connectEventSource();
+scraper.on("update", (data) => {
+  console.log(data);
+});*/
 
 module.exports = Scraper;
