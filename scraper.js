@@ -44,8 +44,8 @@ class Scraper {
             headerDate = "No response date given";
           }
         }
-        console.log('Status Code:', response.statusCode);
-        console.log('Date in Response header:', headerDate);
+        /*console.log('Status Code:', response.statusCode);
+        console.log('Date in Response header:', headerDate);*/
 
         response.on('data', chunk => {
           data.push(chunk);

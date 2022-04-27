@@ -1,7 +1,7 @@
 {
   "name": "pixelcanvas-scraper",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.2",
+  "description": "A pixelcanvas.io scraper",
   "main": "scraper.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0"
@@ -15,5 +15,17 @@
   },
   "publishConfig": {
     "ShadowLp174:registry": "https://npm.pkg.github.com"
+  },
+  "keywords": [
+    "pixelcanvas", "pixelcanvas.io", "scraper", "live", "vanilla", "cjs", "pixeldata"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PRRQRC/pixelcanvas-scraper"
+  },
+  "homepage": "https://github.com/PRRQRC/pixelcanvas-scraper",
+  "bugs": {
+    "url": "https://github.com/PRRQRC/pixelcanvas-scraper/issues",
+    "email": "shadowlp174@gmail.com"
   }
 }
