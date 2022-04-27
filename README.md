@@ -4,6 +4,14 @@ This package allows it to scrape a specific area of [pixelcanvas](https://pixelc
 
 Have Fun :)
 
+## Installation
+
+Just execute `npm install pixelcanvas-scraper` and require it like this:
+
+```JS
+const Scraper = require('pixelcanvas-scraper');
+```
+
 ## Quickstart
 
 Start right away with this example:
