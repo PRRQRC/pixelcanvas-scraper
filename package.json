@@ -1,6 +1,6 @@
 {
   "name": "pixelcanvas-scraper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A pixelcanvas.io scraper",
   "main": "scraper.js",
   "scripts": {

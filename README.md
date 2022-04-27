@@ -39,7 +39,7 @@ setTimeout(() => {
 }, 2000);
 ```
 
-For a whole api server look into the [index.js](index.js) and [index.html](index.html) file.
+For a whole api server look into the [index.js](https://github.com/PRRQRC/pixelcanvas-scraper/blob/master/index.js) and [index.html](https://github.com/PRRQRC/pixelcanvas-scraper/blob/master/index.html) file.
 
 ## API
 
