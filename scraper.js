@@ -78,22 +78,26 @@ class Scraper {
 
       for (let iy = yc; iy < (hc + 1); iy++) {
         for (let ix = xc; ix < (wc + 1); ix++) {
-          const data = await this.downloadCanvas(ix * 15, iy * 15);
-          let i = 0;
-          let offX = ix * 960 - 448;
-          let offY = iy * 960 - 448;
-          data.forEach((b) => {
-            let tx = offX + (Math.floor(i / (64 * 64)) % 15) * 64 + (i % (64 * 64)) % 64;
-            let ty = offY + Math.floor(i / (64 * 64 * 15)) * 64 + Math.floor((i % (64 * 64)) / 64);
-            let c = b >> 4;
-            canvas.update(tx, ty, this.colors.index(c));
-            i += 1;
-            tx = offX + (Math.floor(i / (64 * 64)) % 15) * 64 + (i % (64 * 64)) % 64;
-            ty = offY + Math.floor(i / (64 * 64 * 15)) * 64 + Math.floor((i % (64 * 64)) / 64);
-            c = b & 0xF;
-            canvas.update(tx, ty, this.colors.index(c));
-            i += 1;
-          });
+          try {
+            const data = await this.downloadCanvas(ix * 15, iy * 15);
+            let i = 0;
+            let offX = ix * 960 - 448;
+            let offY = iy * 960 - 448;
+            data.forEach((b) => {
+              let tx = offX + (Math.floor(i / (64 * 64)) % 15) * 64 + (i % (64 * 64)) % 64;
+              let ty = offY + Math.floor(i / (64 * 64 * 15)) * 64 + Math.floor((i % (64 * 64)) / 64);
+              let c = b >> 4;
+              canvas.update(tx, ty, this.colors.index(c));
+              i += 1;
+              tx = offX + (Math.floor(i / (64 * 64)) % 15) * 64 + (i % (64 * 64)) % 64;
+              ty = offY + Math.floor(i / (64 * 64 * 15)) * 64 + Math.floor((i % (64 * 64)) / 64);
+              c = b & 0xF;
+              canvas.update(tx, ty, this.colors.index(c));
+              i += 1;
+            });
+          } catch(e) {
+            rej(e);
+          }
         }
       }
       this.eventEmitter.emit("ready", canvas);
